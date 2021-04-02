@@ -6,6 +6,17 @@ const {
   response
 } = require('../server');
 
+function sendRes(stock1,likeCount,res){
+  var stockData = {
+    stock: stock1.symbol,
+    price: stock1.latestPrice,
+    likes: likeCount
+  }
+  res.send({
+    stockData: stockData
+  })
+}
+
 module.exports = function (app, collection) {
 
   app.route('/api/stock-prices')
@@ -50,26 +61,13 @@ module.exports = function (app, collection) {
                   })
                   // initiate likeCount
                   likeCount = Number(1)
-                  var stockData = {
-                    stock: stock1.symbol,
-                    price: stock1.latestPrice,
-                    likes: likeCount
-                  }
-                  res.send({
-                    stockData: stockData
-                  })
+                  sendRes(stock1,likeCount,res)
+                  
                 }
                 // if like is not true
                 else{
                   likeCount = Number(0)
-                  var stockData = {
-                    stock: stock1.symbol,
-                    price: stock1.latestPrice,
-                    likes: likeCount
-                  }
-                  res.send({
-                    stockData: stockData
-                  })
+                  sendRes(stock1,likeCount,res)
                 }
               })
             }
@@ -85,14 +83,7 @@ module.exports = function (app, collection) {
               // if found then don't add like, return like count
               if(addressAlreadyExists===true){
                 likeCount = Number(likedBy.length)
-                var stockData = {
-                  stock: stock1.symbol,
-                  price: stock1.latestPrice,
-                  likes: likeCount
-                }
-                res.send({
-                  stockData: stockData
-                })
+                sendRes(stock1,likeCount,res)
               }
               // if not found add like, return like count + 1
               else{
@@ -100,14 +91,7 @@ module.exports = function (app, collection) {
                   $push: { likedBy:  clientAddress  }
                 })
                 likeCount = Number(likedBy.length+1)
-                var stockData = {
-                  stock: stock1.symbol,
-                  price: stock1.latestPrice,
-                  likes: likeCount
-                }
-                res.send({
-                  stockData: stockData
-                })
+                sendRes(stock1,likeCount,res)
               }
             }
           })
@@ -117,6 +101,7 @@ module.exports = function (app, collection) {
 
 
         // case: 2 stocks
+
         else if (stocks.length === 2) {
           if (stocks[1].length !== 4 || stocks[0].length !== 4) return res.send({
             error: 'Invalid stocks'
