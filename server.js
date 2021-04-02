@@ -17,10 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://new-user0:lol12345@learn-fcc.5st3o.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.DB;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
-  const collection = client.db("stockpricechecker").collection("users");
+  const collection = client.db("stockpricechecker").collection("stocks");
   // perform actions on the collection object
 
   //For FCC testing purposes
