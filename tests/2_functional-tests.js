@@ -29,7 +29,7 @@ suite('Functional Tests', function() {
             })
             .end((err,res)=>{
                 assert.equal(res.status, 200)
-                assert.equal(res.body.stockData.likes, 1)
+                assert.isAbove(res.body.stockData.likes, 0)
             })
     })
     test('Viewing the same stock and liking it again: GET request to /api/stock-prices/',()=>{
@@ -41,7 +41,7 @@ suite('Functional Tests', function() {
             })
             .end((err,res)=>{
                 assert.equal(res.status, 200)
-                assert.equal(res.body.stockData.likes, 1)
+                assert.isAbove(res.body.stockData.likes,0)
             })
     })
     test('Viewing two stocks: GET request to /api/stock-prices/',()=>{
